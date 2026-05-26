@@ -435,13 +435,16 @@ MCMCCreateScore.AssaySet <- function(object, main.score,
 #' @param stop.label vector of whether variant is in the stop/nonsense group (NA if none provided)
 #' @param blosum.label vector of blosum score of variants
 #' @param pos.act For Growth screen, optional, boolean, whether to fit changepoint position activation model
+#' @param seed integer random seed forwarded to the Stan sampler for reproducibility.
+#'   Pass \code{NULL} to let cmdstanr draw a random seed.
 #'
 #' @rdname RunRosace
 #' @method RunRosace AssayGrowth
 #' @export
 #'
 RunRosace.AssayGrowth <- function(object, savedir, mc.cores = 4, debug = FALSE, install = TRUE,
-                                  pos.label, ctrl.label, stop.label, blosum.label, pos.act = FALSE, ...) {
+                                  pos.label, ctrl.label, stop.label, blosum.label, pos.act = FALSE,
+                                  seed = 100, ...) {
   CheckDots(..., args = "thred")
   return(helperRunRosaceGrowth(object = object,
                                savedir = savedir,
@@ -453,6 +456,7 @@ RunRosace.AssayGrowth <- function(object, savedir, mc.cores = 4, debug = FALSE, 
                                pos.act = pos.act,
                                debug = debug,
                                install = install,
+                               seed = seed,
                                ...))
 }
 
@@ -461,13 +465,16 @@ RunRosace.AssayGrowth <- function(object, savedir, mc.cores = 4, debug = FALSE, 
 #' @param stop.label vector of whether variant is in the stop/nonsense group (NA if none provided)
 #' @param blosum.label vector of blosum score of variants
 #' @param pos.act For Growth screen, optional, boolean, whether to fit changepoint position activation model
+#' @param seed integer random seed forwarded to the Stan sampler for reproducibility.
+#'   Pass \code{NULL} to let cmdstanr draw a random seed.
 #'
 #' @rdname RunRosace
 #' @method RunRosace AssaySetGrowth
 #' @export
 #'
 RunRosace.AssaySetGrowth <- function(object, savedir, mc.cores = 4, debug = FALSE, install = TRUE,
-                                     pos.label, ctrl.label, stop.label, blosum.label, pos.act = FALSE, ...) {
+                                     pos.label, ctrl.label, stop.label, blosum.label, pos.act = FALSE,
+                                     seed = 100, ...) {
   CheckDots(..., args = "thred")
   return(helperRunRosaceGrowth(object = object,
                                savedir = savedir,
@@ -479,6 +486,7 @@ RunRosace.AssaySetGrowth <- function(object, savedir, mc.cores = 4, debug = FALS
                                pos.act = pos.act,
                                debug = debug,
                                install = install,
+                               seed = seed,
                                ...))
 }
 
@@ -494,6 +502,8 @@ RunRosace.AssaySetGrowth <- function(object, savedir, mc.cores = 4, debug = FALS
 #' @param mut.col For Growth screen, optional, for blosum grouping
 #' @param aa.code "single" or "triple" amino acid coding, for blosum grouping
 #' @param pos.act For Growth screen, optional, boolean, whether to fit changepoint position activation model
+#' @param seed integer random seed forwarded to the Stan sampler for reproducibility.
+#'   Pass \code{NULL} to let cmdstanr draw a random seed.
 #'
 #' @rdname RunRosace
 #' @method RunRosace Rosace
@@ -502,7 +512,8 @@ RunRosace.AssaySetGrowth <- function(object, savedir, mc.cores = 4, debug = FALS
 RunRosace.Rosace <- function(object, savedir, mc.cores = 4, debug = FALSE, install = TRUE,
                              name, type,
                              pos.col, ctrl.col, ctrl.name, stop.col, stop.name,
-                             wt.col, mut.col, aa.code, pos.act = FALSE, ...) {
+                             wt.col, mut.col, aa.code, pos.act = FALSE,
+                             seed = 100, ...) {
 
   if (!dir.exists(savedir)) {
     dir.create(savedir, recursive = TRUE)
@@ -585,6 +596,7 @@ RunRosace.Rosace <- function(object, savedir, mc.cores = 4, debug = FALSE, insta
               stop.label = stop.label,
               blosum.label = blosum.label,
               pos.act = pos.act,
+              seed = seed,
               ...)
   } else {
     stop("THIS IS VERY WRONG. Check ExtractAssay and ExtractAssaySet.")
@@ -610,7 +622,7 @@ RunRosace.Rosace <- function(object, savedir, mc.cores = 4, debug = FALSE, insta
 # ...: thred (optional)
 helperRunRosaceGrowth <- function(object, savedir, mc.cores,
                                   pos.label, ctrl.label, stop.label, blosum.label, pos.act = FALSE,
-                                  debug = FALSE, install = TRUE, ...) {
+                                  debug = FALSE, install = TRUE, seed = 100, ...) {
   # create directory if not exists
   if (!dir.exists(savedir)) {
     dir.create(savedir, recursive = TRUE)
@@ -685,7 +697,7 @@ helperRunRosaceGrowth <- function(object, savedir, mc.cores,
 
   # MCMC sampling
   # WARNING: FIT is a temporary environment!!!
-  fit <- MCMCRunStan(input, mod, seed = 100, refresh = 10)
+  fit <- MCMCRunStan(input, mod, seed = seed, refresh = 10)
 
   # MCMC diagnostics
   diags <- MCMCDiagnostics(fit, sampler = FALSE)
