@@ -31,7 +31,7 @@ CheckDots <- function(..., args = NULL, fxns = NULL) {
   # check if args are list of characters
   for (a in args) {
     if (!(is.character(a))) {
-      stop("CheckDots only works on args that are characters, not ", class(x = f))
+      stop("CheckDots only works on args that are characters, not ", class(x = a))
     }
   }
   # only one function passed, convert to list
