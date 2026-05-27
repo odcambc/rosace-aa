@@ -89,7 +89,7 @@ CreateConfig <-
                          mode.rep = mode.rep, # exp (3)
                          n.round = n.round) # exp: optional from rosette (2)
 
-    # pop config 
+    # pop config
     lib.disp <- object@disp.start
     pop <- listPopConfig(pop.size = pop.size, # pop (3)
                          lib.disp = lib.disp, # pop (4)
@@ -137,7 +137,7 @@ listSimConfig <- function(n.sim, save.sim, type.sim, mode.sim) {
 
   return(list(n.sim = n.sim, # number of simulation
               save.sim = save.sim, # saving directory
-              type.sim = type.sim, # type of experiment: growth  
+              type.sim = type.sim, # type of experiment: growth
               mode.sim = mode.sim)) # mode of experiment: numeric 1-5
 
 }
@@ -174,7 +174,7 @@ listPopConfig <- function(pop.size, lib.disp, lib.shrink) {
 
 }
 
-listEffectConfig <- function(var.dist, score.df, pos.df, rounds,  
+listEffectConfig <- function(var.dist, score.df, pos.df, rounds,
                              wt.effect, var.shrink = 0.8) {
 
 
@@ -185,7 +185,7 @@ listEffectConfig <- function(var.dist, score.df, pos.df, rounds,
   if (var.shrink > 1) {
     stop("Effect config: var.shrink has to be no more than 1.")
   } else if (var.shrink < 0.5) {
-    warnings("Effect config: var.shink is lower than 0.5.")
+    warning("Effect config: var.shink is lower than 0.5.")
   }
 
   return(list(rounds = rounds, # max rounds of exp ***import from rosette

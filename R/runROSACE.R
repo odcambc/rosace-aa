@@ -518,7 +518,7 @@ RunRosace.Rosace <- function(object, savedir, mc.cores = 4, debug = FALSE, insta
   if (!dir.exists(savedir)) {
     dir.create(savedir, recursive = TRUE)
   }
-  
+
   # Extract Assay
   if (type == "Assay") {
     sub_object <- ExtractAssay(object, name)
@@ -545,7 +545,7 @@ RunRosace.Rosace <- function(object, savedir, mc.cores = 4, debug = FALSE, insta
 
     # ctrl.col optional
     if (missing(ctrl.col) || missing(ctrl.name)) {
-      warnings("control column (ctrl.col) or name (ctrl.name) not provided.")
+      warning("control column (ctrl.col) or name (ctrl.name) not provided.")
       ctrl.label <- NA
     } else {
       if (type == "Assay") {
@@ -557,7 +557,7 @@ RunRosace.Rosace <- function(object, savedir, mc.cores = 4, debug = FALSE, insta
 
     # stop.col optional
     if (missing(stop.col) || missing(stop.name)) {
-      warnings("stop column or name not provided.")
+      warning("stop column or name not provided.")
       stop.label <- NA
     } else {
       if (type == "Assay") {
@@ -569,7 +569,7 @@ RunRosace.Rosace <- function(object, savedir, mc.cores = 4, debug = FALSE, insta
 
     # blosum.col optional
     if (missing(wt.col) || missing(mut.col) || missing(aa.code)) {
-      warnings("wildtype aa column (wt.col), mutation aa column (mut.col), or amino acid coding scheme (aa.code) not provided.")
+      warning("wildtype aa column (wt.col), mutation aa column (mut.col), or amino acid coding scheme (aa.code) not provided.")
       blosum.label <- NA
       pos.act <- FALSE
     } else {
@@ -667,7 +667,7 @@ helperRunRosaceGrowth <- function(object, savedir, mc.cores,
         mod.file <- WriteStanModel(type = "growth_pos_blosum_nosyn")
       }
       method <- "ROSACE2"
-      warnings("Running blosum model without position activation.")
+      warning("Running blosum model without position activation.")
     }
   } else if (!is.na(pos.label[1])) {
     # write pos-aware Rosace model
@@ -973,7 +973,7 @@ imputeAssaysCount <- function(counts, rounds) {
 
   # if replicates are with different number of rounds
   if (length(unique(rounds)) >= 2) {
-    warnings("Impute assays counts with different number of rounds.
+    warning("Impute assays counts with different number of rounds.
              Truncate counts beyond miminum number of rounds.
              Ex: [2, 3, 3] to [2, 2, 2].",
              immediate. = TRUE)
